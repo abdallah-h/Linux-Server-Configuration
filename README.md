@@ -173,7 +173,7 @@ to :
 ```
 - Run `python3 __init__.py` to test that everything works fine.
 - Run `deactivate` to deactivate the virtual environment.
-### Configure and Enable a New virtual host
+### Configure and enable a new virtual host
 - Run `sudo nano /etc/apache2/mods-enabled/wsgi.conf` and add the following line to it :
 ```
   WSGIPythonPath /var/www/catalog/catalog/venv/lib/python3.5/site-packages

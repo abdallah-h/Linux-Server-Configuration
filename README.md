@@ -175,11 +175,12 @@ to
 - Run `python3 __init__.py` to test that everything works fine.
 - Run `deactivate` to deactivate the virtual environment.
 ### Setting Up the Virtual Host Configuration
-- Run `sudo nano /etc/apache2/mods-enabled/wsgi.conf` and add the following line to it 
+- Run `sudo nano /etc/apache2/mods-enabled/wsgi.conf` and add the following line to it.
 ```
   WSGIPythonPath /var/www/catalog/catalog/venv/lib/python3.5/site-packages
 ```
-- Run `sudo touch /etc/apache2/sites-available/catalog.conf` to create catalog.conf file and add the following lines to it
+- Run `sudo touch /etc/apache2/sites-available/catalog.conf` to create catalog.conf file.
+- Run `sudo nano /etc/apache2/sites-available/catalog.conf` and add the following lines to it.
 ```
   <VirtualHost *:80>
     ServerName YOUR_INSTANCE_PUBLIC_IP
@@ -202,7 +203,8 @@ to
 - Run `sudo service apache2 reload` to reload apache service.
 
 ### Setting Up Flask application
-- Run `sudo touch /var/www/catalog/catalog.wsgi` and add the following lines to it
+- Run `sudo touch /var/www/catalog/catalog.wsgi` to create catalog.conf file
+- Run `sudo nano /var/www/catalog/catalog.wsgi` and add the following lines to it
 ```
   activate_this = '/var/www/catalog/catalog/venv/bin/activate_this.py'
   with open(activate_this) as file_:
@@ -288,25 +290,3 @@ to
 - [Getting Flask to use Python3](https://stackoverflow.com/questions/30642894/getting-flask-to-use-python3-apache-mod-wsgi)
 - [Disable defualt Apache page](https://www.digitalocean.com/community/questions/block-default-apache-page-on-ubuntu-14-04)
 - [Permissions for Apache](https://fideloper.com/user-group-permissions-chmod-apache)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

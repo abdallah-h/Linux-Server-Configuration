@@ -57,7 +57,7 @@ This project involves taking a baseline installation of Linux Server and prepari
 - Then enter a password and info for the new user.
 ### Give grader the permission to sudo
 - Run `sudo visudo` to edits the sudoers file.
-- Add the following line after `root ALL=(ALL:ALL) ALL`
+- Add the following line after `root ALL=(ALL:ALL) ALL` :
 ```
   grader ALL=(ALL:ALL) ALL
 ```
@@ -73,24 +73,24 @@ This project involves taking a baseline installation of Linux Server and prepari
 - Run `sudo nano ~/.ssh/authorized_keys` and paste the content of `grader_key.pub` into this file.
 - Run `chmod 700 .ssh` to change the permission of the dir. 
 - Run `chmod 644 .ssh/authorized_keys` to change the permission of the file. 
-- Run `sudo nano /etc/ssh/sshd_config` file if `PasswordAuthentication` is set to `yes` replace it to `no` to .
+- Run `sudo nano /etc/ssh/sshd_config` file if `PasswordAuthentication` is set to `yes` replace it to `no`.
 - Run `sudo service ssh restart` to restart SSH.
-- Run `exit` to back to local machine
+- Run `exit` to back to local machine.
 
 ## Prepare to deploy the project
 - Run `ssh -i ~/.ssh/grader_key -p 2200 grader@YOUR_INSTANCE_PUBLIC_IP` to connect to yor server instance as grader user.
 ### Configure the local timezone to UTC
-- Run `sudo dpkg-reconfigure tzdata`
-- Then select `None of the above`
-- Then select `UTC`
+- Run `sudo dpkg-reconfigure tzdata`.
+- Then select `None of the above`.
+- Then select `UTC`.
 ### Install and configure Apache
 - Run `sudo apt-get install apache2` to install apache.
 - Run `sudo apt-get install libapache2-mod-wsgi-py3` to install Python 3 mod_wsgi package.
 - Run `sudo a2enmod wsgi` to enable mod_wsgi.
 - Run `sudo service apache2 restart` to restart apache service.
 ### Install and configure PostgreSQL
-- Run `sudo apt-get install postgresql`
-- Run `sudo nano /etc/postgresql/9.1/main/pg_hba.conf` to check that no remote connections are allowed your file should look like this code:
+- Run `sudo apt-get install postgresql`.
+- Run `sudo nano /etc/postgresql/9.1/main/pg_hba.conf` to check that no remote connections are allowed your file should look like this code :
 ```
 local   all             postgres                                peer
 local   all             all                                     peer
@@ -106,7 +106,7 @@ host    all             all             ::1/128                 md5
 - Run `sudo adduser catalog` to create a new Linux user called catalog.
 - Then enter a password and info for the new user.
 - Run `sudo visudo` to edits the sudoers file.
-- Add the following line after `root ALL=(ALL:ALL) ALL`
+- Add the following line after `root ALL=(ALL:ALL) ALL` :
 ```
   catalog ALL=(ALL:ALL) ALL
 ```
@@ -123,37 +123,36 @@ host    all             all             ::1/128                 md5
 - Run `sudo git clone https://github.com/abdohfox/Item-Catalog.git catalog` to clone the Item Catalog project.
 - Change directory to `/var/www`.
 - Run `sudo chown -R grader:grader catalog/` to change the ownershop of the folder.
-- Change directory to `/var/www/catalog/catalog.`
+- Change directory to `/var/www/catalog/catalog.`.
 - Run `mv cproject.py __init__.py` to rename `cproject.py` to `__init__.py`.
-- In `__init__.py` replace 
+- In `__init__.py` replace :
 ```
   app.debug = True
   app.run(host='0.0.0.0', port=8000)
 ```
-to 
+to :
 ```
   app.run()
 ```
-- In `__init__.py`, `database_setup.py` and `database_items.py` replace
+- In `__init__.py`, `database_setup.py` and `database_items.py` replace :
 ```
   engine = create_engine('sqlite:///itemcatalog.db')
 ```
-to
+to :
 ```
   engine = create_engine('postgresql://catalog:123@localhost/catalog')
 ```
-- In `__init__.py` replace 
+- In `__init__.py` replace :
 ```
   CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 ```
-to
+to :
 ```
   CLIENT_ID = json.loads(
     open(r'/var/www/catalog/catalog/client_secrets.json').read())['web']['client_id']
 ```
 
-## Install virtual environment and Flask framework
 ### Install virtual environment
 - Change to home directory of grader user.
 - Run `sudo apt-get install python3-pip` to install python3.
@@ -162,7 +161,7 @@ to
 - Run `sudo virtualenv -p python3 venv` to create the virtual environment.
 - Run `sudo chown -R grader:grader venv/` to change the ownership of the folder to grader.
 - Run `. venv/bin/activate` to activate the environment.
-- Run this commands to install the required libraries
+- Run this commands to install the required libraries :
 ```
   pip install flask
   pip install sqlalchemy
@@ -174,13 +173,13 @@ to
 ```
 - Run `python3 __init__.py` to test that everything works fine.
 - Run `deactivate` to deactivate the virtual environment.
-### Setting Up the Virtual Host Configuration
-- Run `sudo nano /etc/apache2/mods-enabled/wsgi.conf` and add the following line to it.
+### Configure and Enable a New virtual host
+- Run `sudo nano /etc/apache2/mods-enabled/wsgi.conf` and add the following line to it :
 ```
   WSGIPythonPath /var/www/catalog/catalog/venv/lib/python3.5/site-packages
 ```
 - Run `sudo touch /etc/apache2/sites-available/catalog.conf` to create catalog.conf file.
-- Run `sudo nano /etc/apache2/sites-available/catalog.conf` and add the following lines to it.
+- Run `sudo nano /etc/apache2/sites-available/catalog.conf` and add the following lines to it :
 ```
   <VirtualHost *:80>
     ServerName YOUR_INSTANCE_PUBLIC_IP
@@ -202,9 +201,9 @@ to
 - Run `sudo a2ensite catalog` to enable the virtual host.
 - Run `sudo service apache2 reload` to reload apache service.
 
-### Setting Up Flask application
-- Run `sudo touch /var/www/catalog/catalog.wsgi` to create catalog.conf file
-- Run `sudo nano /var/www/catalog/catalog.wsgi` and add the following lines to it
+### Configure of .wsgi File
+- Run `sudo touch /var/www/catalog/catalog.wsgi` to create catalog.conf file.
+- Run `sudo nano /var/www/catalog/catalog.wsgi` and add the following lines to it :
 ```
   activate_this = '/var/www/catalog/catalog/venv/bin/activate_this.py'
   with open(activate_this) as file_:
@@ -220,6 +219,7 @@ to
   from catalog import app as application
   application.secret_key = "123"
 ```
+### Restart Apache
 - Run `sudo service apache2 restart` to restart apache service.
 ### Setting Up the Database
 - Run `cd /var/www/catalog/catalog/`.
@@ -237,8 +237,8 @@ to
 2. Sign in to your account or make a new one.
 3. Create a New Project.
 4. Choose Credentials from the menu on the left.
-5. Choose Web application
-6. Enter name 'Catalog Item'
+5. Choose Web application.
+6. Enter name 'Catalog Item'.
 7. Set the authorized JavaScript origins = 'http://YOUR_INSTANCE_PUBLIC_IP'.
 8. Set the authorized redirect URIs = 'http://YOUR_DOMAIN_NAME'.
 9. You will then be able to get the client ID and client secret.
@@ -247,14 +247,14 @@ to
 12. Place the JSON file into catalog app directory.
 
 ### Facebook OAuth
-1. Go to [Facebook Developer](https://developers.facebook.com/)
+1. Go to [Facebook Developer](https://developers.facebook.com/).
 2. Sign in to your account or make a new one.
 3. Click on create new app.
 4. Enter name 'Catalog Item'
 5. Then select 'Integrate Facebook Login' scenario then confirm.
-6. Configure the URL site as: http://YOUR_INSTANCE_PUBLIC_IP
-7. Create a new file and name it fb_client_secrets.json
-8. Then copy this code into it
+6. Configure the URL site as: http://YOUR_INSTANCE_PUBLIC_IP.
+7. Create a new file and name it fb_client_secrets.json.
+8. Then copy this code into it :
 ```
 {
   "web": {
@@ -263,14 +263,14 @@ to
   }
 }
 ```
-9. Copy the App ID and App Secret and paste it into 'fb_client_secrets.json' file
+9. Copy the App ID and App Secret and paste it into 'fb_client_secrets.json' file.
 10. Place the JSON file into catalog app directory.
 
 ## Launch the app
 - Run `sudo chown -R www-data:www-data catalog/` to change the owner of all the directories and files of the app.
-- Run `sudo service apache2 restart` to restart apache service
-- Now you should be able to launch the application at http://YOUR_INSTANCE_PUBLIC_IP
-- You can access my app at http://18.130.245.167/
+- Run `sudo service apache2 restart` to restart apache service.
+- Now you should be able to launch the application at http://YOUR_INSTANCE_PUBLIC_IP.
+- You can access my app at http://18.130.245.167/.
 
 ## Resources
 - [Set up SSH](https://lightsail.aws.amazon.com/ls/docs/en/articles/lightsail-how-to-set-up-ssh)

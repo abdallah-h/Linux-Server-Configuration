@@ -62,6 +62,7 @@ This project involves taking a baseline installation of Linux Server and prepari
   grader ALL=(ALL:ALL) ALL
 ```
 - Save and exit the file.
+- Run `sudo nano /etc/ssh/sshd_config` and set `PermitRootLogin` to `no` to disable remote SSH authorization as the root user.
 ### Create an SSH key pair for grader using the ssh-keygen tool
 - Run `ssh-keygen` on the local machine.
 - Enter the default path `~/.ssh` and name the key file `grader_key`.

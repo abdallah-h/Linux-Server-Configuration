@@ -1,4 +1,4 @@
-# Linux-Server-Configuration
+# Linux Server Configuration
 
 ## Introduction
 This project involves taking a baseline installation of Linux Server and preparing it to host web applications. This includes securing the server a number of attack vectors, install and configure a database server, and deploy Item Catalog app onto it.
@@ -211,8 +211,9 @@ to
   import sys
   import logging
   logging.basicConfig(stream=sys.stderr)
-  sys.path.insert(0, "/var/www/catalog/")
-
+  sys.path.insert(0, "/var/www/catalog/catalog/")
+  sys.path.insert(1, "/var/www/catalog/")
+  
   from catalog import app as application
   application.secret_key = "123"
 ```
@@ -262,7 +263,8 @@ to
 9. Copy the App ID and App Secret and paste it into 'fb_client_secrets.json' file
 10. Place the JSON file into catalog app directory.
 
-- Run `sudo chown -R www-data:www-data catalog/` to change the owner of all the directories and files.
+## Launch the app
+- Run `sudo chown -R www-data:www-data catalog/` to change the owner of all the directories and files of the app.
 - Run `sudo service apache2 restart` to restart apache service
 - Now you should be able to launch the application at http://YOUR_INSTANCE_PUBLIC_IP
 - You can access my app at http://18.130.245.167/

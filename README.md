@@ -6,6 +6,7 @@ This project involves taking a baseline installation of Linux Server and prepari
 ## Server Infoormation
 - Public IP : 18.130.245.167
 - SSH Port : 2200
+- [Catalog App](http://18.130.245.167/)
 
 ## Get your server
 ### Start a new Ubuntu Linux server instance on Amazon Lightsail.
